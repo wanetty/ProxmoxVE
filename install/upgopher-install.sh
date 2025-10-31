@@ -25,48 +25,17 @@ msg_ok "Installed Upgopher"
 
 msg_info "Configuring Upgopher"
 
-# Prompt for optional authentication
+# Use default configuration (no authentication, HTTP, default port/directory)
+# Users can modify /etc/systemd/system/upgopher.service after installation to enable features
 AUTH_FLAGS=""
-read -r -p "${TAB3}Enable authentication? (y/N): " enable_auth
-if [[ "$enable_auth" =~ ^[Yy]$ ]]; then
-  read -r -p "${TAB3}Enter username [admin]: " UPGOPHER_USER
-  UPGOPHER_USER=${UPGOPHER_USER:-admin}
-  UPGOPHER_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c16)
-  {
-    echo "Upgopher Credentials"
-    echo ""
-    echo "Username: $UPGOPHER_USER"
-    echo "Password: $UPGOPHER_PASS"
-  } >>~/upgopher.creds
-  AUTH_FLAGS="-user $UPGOPHER_USER -pass $UPGOPHER_PASS"
-  msg_ok "Authentication enabled (credentials saved to ~/upgopher.creds)"
-fi
-
-# Prompt for SSL
 SSL_FLAG=""
-read -r -p "${TAB3}Enable HTTPS with self-signed certificate? (y/N): " enable_ssl
-if [[ "$enable_ssl" =~ ^[Yy]$ ]]; then
-  SSL_FLAG="-ssl"
-  msg_ok "HTTPS enabled"
-fi
+UPGOPHER_PORT="9090"
+UPGOPHER_DIR="/opt/upgopher/uploads"
+HIDDEN_FLAG=""
 
-# Prompt for custom port
-read -r -p "${TAB3}Enter port [9090]: " UPGOPHER_PORT
-UPGOPHER_PORT=${UPGOPHER_PORT:-9090}
-
-# Prompt for upload directory
-read -r -p "${TAB3}Enter upload directory [/opt/upgopher/uploads]: " UPGOPHER_DIR
-UPGOPHER_DIR=${UPGOPHER_DIR:-/opt/upgopher/uploads}
 mkdir -p "$UPGOPHER_DIR"
 
-# Prompt for hidden files
-HIDDEN_FLAG=""
-read -r -p "${TAB3}Hide hidden files? (y/N): " hide_hidden
-if [[ "$hide_hidden" =~ ^[Yy]$ ]]; then
-  HIDDEN_FLAG="-disable-hidden-files"
-fi
-
-msg_ok "Configured Upgopher"
+msg_ok "Configured Upgopher (default settings: no auth, HTTP, port 9090)"
 
 msg_info "Creating Service"
 cat <<EOF >/etc/systemd/system/upgopher.service
