@@ -37,13 +37,10 @@ function update_script() {
         RELEASE_URL=$(curl -s https://api.github.com/repos/wanetty/upgopher/releases/latest | grep "browser_download_url.*linux_amd64.tar.gz" | cut -d '"' -f 4)
         wget -q "$RELEASE_URL"
         tar -xzf upgopher_*_linux_amd64.tar.gz
+        mv upgopher_*_linux_amd64/* .
+        rmdir upgopher_*_linux_amd64
         rm -f upgopher_*_linux_amd64.tar.gz
-        # Renombrar el binario extraído a 'upgopher'
-        if [ -f upgopher_*_linux_amd64 ]; then
-            mv upgopher_*_linux_amd64 upgopher
-        fi
         chmod +x upgopher
-
         msg_info "Starting Services"
         systemctl start upgopher
         msg_ok "Started Services"

@@ -23,26 +23,18 @@ cd /opt/upgopher
 RELEASE_URL=$(curl -s https://api.github.com/repos/wanetty/upgopher/releases/latest | grep "browser_download_url.*linux_amd64.tar.gz" | cut -d '"' -f 4)
 wget -q "$RELEASE_URL"
 tar -xzf upgopher_*_linux_amd64.tar.gz
+mv upgopher_*_linux_amd64/* .
+rmdir upgopher_*_linux_amd64
 rm -f upgopher_*_linux_amd64.tar.gz
-# Renombrar el binario extraído a 'upgopher'
-if [ -f upgopher_*_linux_amd64 ]; then
-    mv upgopher_*_linux_amd64 upgopher
-fi
 chmod +x upgopher
 msg_ok "Installed Upgopher"
 
 msg_info "Configuring Upgopher"
-
 # Use default configuration (no authentication, HTTP, default port/directory)
 # Users can modify /etc/systemd/system/upgopher.service after installation to enable features
-AUTH_FLAGS=""
-SSL_FLAG=""
 UPGOPHER_PORT="9090"
 UPGOPHER_DIR="/opt/upgopher/uploads"
-HIDDEN_FLAG=""
-
 mkdir -p "$UPGOPHER_DIR"
-
 msg_ok "Configured Upgopher (default settings: no auth, HTTP, port 9090)"
 
 msg_info "Creating Service"
@@ -56,7 +48,7 @@ After=network.target
 Type=simple
 User=root
 WorkingDirectory=/opt/upgopher
-ExecStart=/opt/upgopher/upgopher -port $UPGOPHER_PORT -dir "$UPGOPHER_DIR" $SSL_FLAG $AUTH_FLAGS $HIDDEN_FLAG
+ExecStart=/opt/upgopher/upgopher -port $UPGOPHER_PORT -dir "$UPGOPHER_DIR"
 Restart=always
 RestartSec=5
 
