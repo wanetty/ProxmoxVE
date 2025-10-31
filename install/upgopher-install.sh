@@ -19,7 +19,7 @@ msg_ok "Installed Dependencies"
 
 msg_info "Installing Upgopher"
 mkdir -p /opt/upgopher
-fetch_and_deploy_gh_release "upgopher" "wanetty/upgopher" "singlefile" "latest" "/opt/upgopher" "upgopher*linux*amd64*"
+fetch_and_deploy_gh_release "upgopher" "wanetty/upgopher" "tarball" "latest" "/opt/upgopher" "upgopher*linux*amd64*.tar.gz"
 chmod +x /opt/upgopher/upgopher
 msg_ok "Installed Upgopher"
 
