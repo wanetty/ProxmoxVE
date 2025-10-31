@@ -33,15 +33,15 @@
   },
   "notes": [
     {
-      "text": "Default installation has no authentication. You can enable it during installation.",
+      "text": "Default installation: HTTP on port 9090, no authentication.",
       "type": "info"
     },
     {
-      "text": "If authentication is enabled, credentials are saved in ~/upgopher.creds",
+      "text": "To enable authentication/HTTPS/custom settings, edit /etc/systemd/system/upgopher.service and add flags: -user <username> -pass <password> -ssl -port <port>",
       "type": "info"
     },
     {
-      "text": "HTTPS with self-signed certificate can be enabled during installation.",
+      "text": "Restart service after changes: systemctl restart upgopher",
       "type": "info"
     }
   ]
