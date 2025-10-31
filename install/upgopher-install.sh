@@ -19,8 +19,12 @@ msg_ok "Installed Dependencies"
 
 msg_info "Installing Upgopher"
 mkdir -p /opt/upgopher
-fetch_and_deploy_gh_release "upgopher" "wanetty/upgopher" "tarball" "latest" "/opt/upgopher" "upgopher*linux*amd64*.tar.gz"
-chmod +x /opt/upgopher/upgopher
+cd /opt/upgopher
+RELEASE_URL=$(curl -s https://api.github.com/repos/wanetty/upgopher/releases/latest | grep "browser_download_url.*linux_amd64.tar.gz" | cut -d '"' -f 4)
+wget -q "$RELEASE_URL"
+tar -xzf upgopher_*_linux_amd64.tar.gz
+rm -f upgopher_*_linux_amd64.tar.gz
+chmod +x upgopher
 msg_ok "Installed Upgopher"
 
 msg_info "Configuring Upgopher"

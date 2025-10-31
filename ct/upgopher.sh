@@ -33,7 +33,12 @@ function update_script() {
         systemctl stop upgopher
         msg_ok "Stopped Services"
 
-        fetch_and_deploy_gh_release "upgopher" "wanetty/upgopher" "tarball" "latest" "/opt/upgopher" "upgopher*linux*amd64*.tar.gz"
+        cd /opt/upgopher
+        RELEASE_URL=$(curl -s https://api.github.com/repos/wanetty/upgopher/releases/latest | grep "browser_download_url.*linux_amd64.tar.gz" | cut -d '"' -f 4)
+        wget -q "$RELEASE_URL"
+        tar -xzf upgopher_*_linux_amd64.tar.gz
+        rm -f upgopher_*_linux_amd64.tar.gz
+        chmod +x upgopher
 
         msg_info "Starting Services"
         systemctl start upgopher
