@@ -38,6 +38,10 @@ function update_script() {
         wget -q "$RELEASE_URL"
         tar -xzf upgopher_*_linux_amd64.tar.gz
         rm -f upgopher_*_linux_amd64.tar.gz
+        # Renombrar el binario extraído a 'upgopher'
+        if [ -f upgopher_*_linux_amd64 ]; then
+            mv upgopher_*_linux_amd64 upgopher
+        fi
         chmod +x upgopher
 
         msg_info "Starting Services"

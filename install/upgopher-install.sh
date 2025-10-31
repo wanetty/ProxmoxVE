@@ -14,7 +14,7 @@ network_check
 update_os
 
 msg_info "Installing Dependencies"
-$STD apt-get install -y curl
+$STD apt-get install -y curl wget
 msg_ok "Installed Dependencies"
 
 msg_info "Installing Upgopher"
@@ -24,6 +24,10 @@ RELEASE_URL=$(curl -s https://api.github.com/repos/wanetty/upgopher/releases/lat
 wget -q "$RELEASE_URL"
 tar -xzf upgopher_*_linux_amd64.tar.gz
 rm -f upgopher_*_linux_amd64.tar.gz
+# Renombrar el binario extraído a 'upgopher'
+if [ -f upgopher_*_linux_amd64 ]; then
+    mv upgopher_*_linux_amd64 upgopher
+fi
 chmod +x upgopher
 msg_ok "Installed Upgopher"
 
